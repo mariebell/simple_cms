@@ -1,0 +1,25 @@
+version: '3'
+services:
+  web:
+    container_name: cms_web
+    build:
+      context: .
+      dockerfile: ./docker/web/Dockerfile
+    volumes:
+      - .:/var/www/html
+    environment:
+      - DATABASE_HOST=mysql
+      - DATABASE_USER=root
+      - DATABASE_PASS=password
+      - DATABASE_NAME=sample
+    ports:
+      - 9000:80
+    links:
+      - db
+  db:
+    container_name: cms_db
+    image: mysql:5.7
+    volumes:
+      - ./docker/db/data:/var/lib.mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
