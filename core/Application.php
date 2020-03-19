@@ -99,4 +99,71 @@ abstract class Application
   {
     return $this->getWebDir . '/web';
   }
+
+  /**
+   * クライアントのリクエストに対応しレスポンスを返却
+   */
+  public function run()
+  {
+    try {
+      $params = $this->router->resolve($this->request->getPathInfo());
+      if ($params === false) {
+        
+      }
+      $controller = $params['controller'];
+      $action = $params['action'];
+
+      $this->runAction($controller, $action, $params);
+
+    } catch (HttpNotFoundException $e) {
+      $this->render404Page($e);
+    }
+    $this->response->send();
+  }
+
+  /**
+   * 対応するアクションを呼び出す
+   */
+  public function runAction($controller_name, $action, $params = [])
+  {
+    $controller_class = ucfirst($controller_name) . 'Controller';
+
+    $controller = $this->findController($controller_class);
+    if ($controller === false) {
+
+    }
+
+    $content = $controller->run($action, $params);
+
+    $this->response->setContent($content);
+  }
+
+  protected function findController($controller_class)
+  {
+    if (!class_exists($controller_class)) {
+      $controller_file = $this->getControllerDir() . '/' . $controller_class . '.php';
+      if (!is_readable($controller_file)) {
+        return false;
+      } else {
+        require_once $controller_file;
+
+        if (!class_exists($controller_class)) {
+          return false;
+        }
+      }
+    }
+    return new $controller_class($this);
+  }
+
+  /**
+   * 404ページ
+   */
+  protected function render404Page($e)
+  {
+    $this->response->setStatus(404, 'Not Found');
+    $message = $this->isDebugMode() ? $e->getMessage() : 'Page Not Found.';
+    $message = htmlspecialchars($message, ENT_QUOTES, 'UTF-8');
+
+    $this->response->setContent($message);
+  }
 }
