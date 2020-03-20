@@ -7,11 +7,6 @@ class ClassLoader
 {
   protected $dirs;
 
-  public function dir()
-  {
-    print_r($this->dirs);
-  }
-
   //オートロードの登録
   public function register()
   {
