@@ -73,7 +73,7 @@ class Request
    */
   public function getBaseUrl()
   {
-    $script_name = $SERVER['SCRIPT_NAME']; //実際に処理されるファイル /hoge/fuga/index.php
+    $script_name = $_SERVER['SCRIPT_NAME']; //実際に処理されるファイル /hoge/fuga/index.php
     $request_uri = $this->getRequestUri(); //表示上のURL /hoge/fuga
 
     if (0 === strpos($request_uri, $script_name)) {
@@ -94,7 +94,7 @@ class Request
     $request_uri = $this->getRequestUri();
 
     //クエリ部分を捨てる
-    if (false !== ($pos = strpos($request_url, '?'))) {
+    if (false !== ($pos = strpos($request_uri, '?'))) {
       $request_uri = substr($request_uri, 0, $pos); 
     }
     //ベースとなるURL以下のパスを取得

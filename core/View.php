@@ -24,7 +24,7 @@
    {
      $_file = $this->base_dir . '/' . $_path . '.php';
 
-     extract(array_merge($this->defaults, $_varables));
+     extract(array_merge($this->defaults, $_variables));
 
      //出力バッファリングの開始
      ob_start();

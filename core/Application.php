@@ -83,17 +83,17 @@ abstract class Application
 
   public function getControllerDir()
   {
-    return $this->getRootDir . '/controllers';
+    return $this->getRootDir() . '/controllers';
   }
 
   public function getViewDir()
   {
-    return $this->getRootDir . '/views';
+    return $this->getRootDir() . '/views';
   }
 
   public function getModelDir()
   {
-    return $this->getRootDir . '/models';
+    return $this->getRootDir() . '/models';
   }
 
   public function getWebDir()
@@ -109,7 +109,7 @@ abstract class Application
     try {
       $params = $this->router->resolve($this->request->getPathInfo());
       if ($params === false) {
-        
+        throw new HttpNotFoundException('No route found for ' . $this->request->getPathInfo());
       }
       $controller = $params['controller'];
       $action = $params['action'];
@@ -134,7 +134,7 @@ abstract class Application
 
     $controller = $this->findController($controller_class);
     if ($controller === false) {
-
+      throw new HttpNotFoundException($controller_class . ' controller was not found');
     }
 
     $content = $controller->run($action, $params);
@@ -164,7 +164,7 @@ abstract class Application
    */
   protected function render404Page($e)
   {
-    $this->response->setStatus(404, 'Not Found');
+    $this->response->setStatusCode(404, 'Not Found');
     $message = $this->isDebugMode() ? $e->getMessage() : 'Page Not Found.';
     $message = htmlspecialchars($message, ENT_QUOTES, 'UTF-8');
 

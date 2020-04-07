@@ -5,6 +5,8 @@
  */
 class DbManager
 {
+  protected $connections = [];
+  
   protected $repository_connection_map = [];
 
   protected $repositories = [];

@@ -32,6 +32,8 @@ class Router
       $pattern = '/'.implode('/', $tokens);
       $routes[$pattern] = $params;
     }
+
+    return $routes;
   }
 
   /**
