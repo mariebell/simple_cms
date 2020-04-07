@@ -1,12 +1,13 @@
 version: '3'
 services:
   web:
-    container_name: cms_web
+    container_name: miniblog_web
     build:
       context: .
       dockerfile: ./docker/web/Dockerfile
     volumes:
       - .:/var/www/html
+      - ./docker/web/000-default.conf:/etc/apache2/sites-available/000-default.conf
     environment:
       - DATABASE_HOST=mysql
       - DATABASE_USER=root
@@ -17,7 +18,7 @@ services:
     links:
       - db
   db:
-    container_name: cms_db
+    container_name: miniblog_db
     image: mysql:5.7
     volumes:
       - ./docker/db/data:/var/lib.mysql
