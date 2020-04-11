@@ -22,6 +22,8 @@ abstract class DbRepository
   {
     $stmt = $this->con->prepare($sql);
     $stmt->execute($params);
+
+    return $stmt;
   }
 
   public function fetch($sql, $params = [])

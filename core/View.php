@@ -20,7 +20,7 @@
      $this->layout_variables[$name] = $value;
    }
 
-   public function render($_path, $variables = [], $_layout = false)
+   public function render($_path, $_variables = [], $_layout = false)
    {
      $_file = $this->base_dir . '/' . $_path . '.php';
 
